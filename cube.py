@@ -8,7 +8,7 @@ clock = pg.time.Clock()
 
 screen = pg.display.set_mode((1600, 900))
 
-player_pos = [0, 1, 0]
+player_pos = [0, 1, -200]
 
 SCREEN_DIST  =100
 POINTS = {1 : [-100, -100, -100]
@@ -19,6 +19,10 @@ POINTS = {1 : [-100, -100, -100]
          ,6 : [100, -100, 100]
          ,7 : [100, 100, -100]
          ,8 : [100, 100, 100]}
+
+projections = {}
+
+
 # b = 0
 # for x  in range(2):
 #     for y in range(2):
@@ -38,11 +42,20 @@ def render_point(point) -> None:
     #if int(player_point_vect[2]) != SCREEN_DIST: print(player_screen_vect)
 
     point_projection = (player_pos[0] + player_screen_vect[0] + 800, player_pos[1] + player_screen_vect[1] + 450)
-
-    pg.draw.circle(screen, (0, 20 * point, 0), point_projection, 10)
-    #print(point, point_projection)
     
+    pg.draw.circle(screen, (0, 20 * point, 0), point_projection, 10)
 
+    projections[point] = point_projection
+    
+def draw_lines() -> None:
+    for i in (2, 3, 5):
+        pg.draw.line(screen, "black", projections[1], projections[i])
+    for i in (2, 3, 8):
+        pg.draw.line(screen, "black", projections[4], projections[i])
+    for i in (2, 5, 8):
+        pg.draw.line(screen, "black", projections[6], projections[i])
+    for i in (3, 5, 8):
+        pg.draw.line(screen, "black", projections[7], projections[i])
 
 while True:
     for event in pg.event.get():
@@ -58,8 +71,8 @@ while True:
     if keys[pg.K_a]: player_pos[0] -= 10
     if keys[pg.K_d]: player_pos[0] += 10
 
-    if keys[pg.K_SPACE]: player_pos[1] += 10
-    if keys[pg.K_LSHIFT]: player_pos[1] -= 10
+    if keys[pg.K_SPACE]: player_pos[1] -= 10
+    if keys[pg.K_LSHIFT]: player_pos[1] += 10
 
 
     screen.fill("black")
@@ -67,6 +80,7 @@ while True:
     pg.draw.rect(screen, (55, 100, 250), pg.Rect(0,player_pos[1] - screen.get_height() // 2, screen.get_width(), screen.get_height()))
 
     for point in POINTS: render_point(point)
+    draw_lines()
 
     pg.display.update()
     clock.tick(60)
