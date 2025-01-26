@@ -49,13 +49,13 @@ def render_point(point) -> None:
     
 def draw_lines() -> None:
     for i in (2, 3, 5):
-        pg.draw.line(screen, "black", projections[1], projections[i])
+        pg.draw.line(screen, "black", projections[1], projections[i], 5)
     for i in (2, 3, 8):
-        pg.draw.line(screen, "black", projections[4], projections[i])
+        pg.draw.line(screen, "black", projections[4], projections[i], 5)
     for i in (2, 5, 8):
-        pg.draw.line(screen, "black", projections[6], projections[i])
+        pg.draw.line(screen, "black", projections[6], projections[i], 5)
     for i in (3, 5, 8):
-        pg.draw.line(screen, "black", projections[7], projections[i])
+        pg.draw.line(screen, "black", projections[7], projections[i], 5)
 
 while True:
     for event in pg.event.get():
