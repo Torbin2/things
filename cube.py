@@ -10,7 +10,7 @@ screen = pg.display.set_mode((1600, 900))
 
 player_pos = [0, 1, -200]
 
-SCREEN_DIST  =100
+SCREEN_DIST  =300
 POINTS = {1 : [-100, -100, -100]
          ,2 : [-100, -100, 100]
          ,3 : [-100, 100, -100]
@@ -32,16 +32,15 @@ projections = {}
 def render_point(point) -> None:
     cords = POINTS[point] #x y z
     player_point_vect = [cords[0] - player_pos[0], cords[1] - player_pos[1], cords[2] - player_pos[2]]
-    scale = SCREEN_DIST / player_point_vect[2]
-    #daigonal_side = math.sqrt((cords[0] - player_pos[0])**2 + (cords[1] - player_pos[1])**2 + (cords[2] - player_pos[2])**2)
-    # bottom_side = math.sqrt((cords[0] - player_pos[0])**2 + (cords[2] - player_pos[2])**2)
-    # #angle = math.acos(bottom_side / daigonal_side)
-    
-    # screen_dist_scale = SCREEN_DIST  / (cords[2] - player_pos[2])
+    try: 
+        scale = SCREEN_DIST / player_point_vect[2]
+    except ZeroDivisionError: scale = 1000
+
     player_screen_vect = list(map(lambda x: x * scale, player_point_vect))
     #if int(player_point_vect[2]) != SCREEN_DIST: print(player_screen_vect)
 
     point_projection = (player_pos[0] + player_screen_vect[0] + 800, player_pos[1] + player_screen_vect[1] + 450)
+    #point_projection = (player_screen_vect[0] + 800,player_screen_vect[1] + 450)
     
     pg.draw.circle(screen, (0, 20 * point, 0), point_projection, 10)
 
