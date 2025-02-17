@@ -29,6 +29,12 @@ projections = {}
 #         for z in range(2):
 #             print(f"{b} : [{1*x}, {1*y}, {1*z}]")
 #             b+=1
+
+def minimap(player_pos, points) -> None:
+    pg.draw.circle(screen,"red", (player_pos[0] + 800, player_pos[2] + 450), 10)
+    for point in points:
+        pg.draw.circle(screen,"red", (POINTS[point][0]+ 800, POINTS[point][2]+ 450), 10)
+
 def render_point(point) -> None:
     cords = POINTS[point] #x y z
     player_point_vect = [cords[0] - player_pos[0], cords[1] - player_pos[1], cords[2] - player_pos[2]]
@@ -80,6 +86,7 @@ while True:
 
     for point in POINTS: render_point(point)
     draw_lines()
+    minimap(player_pos, POINTS)
 
     pg.display.update()
     clock.tick(60)
