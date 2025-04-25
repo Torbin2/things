@@ -34,18 +34,20 @@ class Box:
         line_of_sight_vect = (math.cos(rotation), math.sin(rotation))
         angle = math.atan2(line_of_sight_vect[1], line_of_sight_vect[0]) - math.atan2(player_point_vect[1], player_point_vect[0])
         
-        if abs(angle) > 1 * math.pi:
-            print("behind")
-            #return
+        # if abs(angle) > math.pi/2:
+        #     print("behind")
+        #     return
         try:
             lenght_LOS_vect = math.sqrt(line_of_sight_vect[0]**2 + line_of_sight_vect[1]**2)
             rc = (line_of_sight_vect[0] / lenght_LOS_vect, line_of_sight_vect[1] / lenght_LOS_vect) #richtingscoefiecent zichtlijn
             c = rc[0] * player_pos[0] +  rc[1] * player_pos[1] #c = ax + by
             
-            d_line_point = (abs(rc[0] * cords[0] + rc[1] * cords[1] - c)) / (math.sqrt(rc[0]**2 + rc[1]**2))
+            if abs(angle) < math.pi/2: d_line_point = (abs(rc[0] * cords[0] + rc[1] * cords[1] - c)) / (math.sqrt(rc[0]**2 + rc[1]**2))
+            else: d_line_point = math.sqrt((player_pos[0] - cords[0])**2 + (player_pos[1] - cords[1])**2)
+            
             d_player_point = math.sqrt((player_pos[0] - cords[0])**2 + (player_pos[1] - cords[1])**2)
-            print(rc, c, d_line_point, 1 - 2* (angle < 0))
-            side = 1 - 2* (angle > 0)
+            print(angle, d_line_point, 1 - 2* (angle < 0))
+            side = 1 - 2* (angle < 0)
             angle_triangle = math.asin(d_line_point / d_player_point)
             
             projected_x = SCREEN_DIST * math.tan(angle_triangle) * side #player -> screen * tan(angle) * left/right
